@@ -40,7 +40,8 @@ function detailMessage(detail) {
 
 async function apiRequest(
   path,
-  { method = "GET", body, isForm = false, auth = true, timeout = 15000 } = {}
+  { method = "GET", body, isForm = false, auth = true, timeout = 75000 } = {},
+  _retries = 2
 ) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -84,8 +85,17 @@ async function apiRequest(
     }
     return data;
   } catch (err) {
+    // Render's free tier cold-starts after inactivity; the first request can
+    // fail to connect while the backend wakes up. Retry a couple of times
+    // before surfacing an error to the user.
+    if (_retries > 0 && err instanceof TypeError) {
+      await new Promise((r) => setTimeout(r, 3000));
+      return apiRequest(path, { method, body, isForm, auth, timeout }, _retries - 1);
+    }
     if (err.name === "AbortError") {
-      throw new Error("Request timed out — is the backend running?");
+      throw new Error(
+        "Request timed out — the backend may be starting up. Please try again."
+      );
     }
     if (err instanceof TypeError) {
       throw new Error(
