@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/BookStore/static/css/main.50f9c5e8.css",
-    "main.js": "/BookStore/static/js/main.493138ce.js",
+    "main.js": "/BookStore/static/js/main.8386fb5c.js",
     "static/js/206.1b978f4d.chunk.js": "/BookStore/static/js/206.1b978f4d.chunk.js",
     "index.html": "/BookStore/index.html"
   },
   "entrypoints": [
     "static/css/main.50f9c5e8.css",
-    "static/js/main.493138ce.js"
+    "static/js/main.8386fb5c.js"
   ]
 }
