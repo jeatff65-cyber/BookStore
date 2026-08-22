@@ -1,0 +1,6 @@
+# Netlify build config for the BookStore monorepo.
+# NOTE: the repo root contains the Python/FastAPI backend, which runs on
+# Render (NOT Netlify). This file points Netlify at the React ADMIN
+# frontend so it builds the correct project.
+[build]
+  base = "BookStore-Frontend_admin-main/BookStore-Frontend_admin-main"
