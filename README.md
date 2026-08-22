@@ -7,7 +7,7 @@ React frontends (admin panel and user shop).
 
 | Folder | Description | Stack |
 |--------|-------------|-------|
-| `BookStore-Backend-main` | Backend REST API | FastAPI, SQLAlchemy, PostgreSQL |
+| `./` (repository root) | Backend REST API | FastAPI, SQLAlchemy, PostgreSQL |
 | `BookStore-Frontend_admin-main` | Admin panel | React (Create React App) |
 | `BookStore-Frontend_user-main` | User shop | React (Create React App) |
 
@@ -15,8 +15,10 @@ React frontends (admin panel and user shop).
 
 ### 1. Backend
 
+The backend lives at the **repository root** (folders `app/`, files
+`requirements.txt`, `run.py`).
+
 ```bash
-cd BookStore-Backend-main/BookStore-Backend-main
 python -m venv venv
 venv\Scripts\activate        # Windows
 # source venv/bin/activate   # macOS / Linux

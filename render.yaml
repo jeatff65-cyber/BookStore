@@ -10,7 +10,6 @@ services:
     name: bookstore-api
     runtime: python
     plan: free
-    rootDir: BookStore-Backend-main/BookStore-Backend-main
     buildCommand: "pip install -r requirements.txt"
     startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
