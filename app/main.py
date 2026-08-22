@@ -5,8 +5,13 @@ from .core.config import settings
 from .core.database import Base, engine
 from .api.routes import auth, books
 
-# Create database tables on startup
-Base.metadata.create_all(bind=engine)
+# Create database tables on startup. Wrapped in try/except so the app still
+# starts even if the database is temporarily unreachable (e.g. before the
+# real DATABASE_URL is configured) — API calls will surface the error.
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as exc:
+    print(f"WARNING: could not create database tables: {exc}")
 
 app = FastAPI(
     title="Book Store API",

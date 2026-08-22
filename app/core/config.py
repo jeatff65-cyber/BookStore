@@ -46,11 +46,21 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# If DATABASE_URL is empty or still has the PASSWORD_HERE placeholder,
-# fall back to a LOCAL development database (SQLite) so the app can run
-# immediately. Set DATABASE_URL to your real PostgreSQL connection string
-# to use the production database instead.
-if not settings.DATABASE_URL or "PASSWORD_HERE" in settings.DATABASE_URL:
+# Detect any obvious placeholder text so we don't try to connect to a
+# fake host (e.g. an un-filled .env / env var).
+_PLACEHOLDER_MARKERS = (
+    "PASSWORD_HERE",
+    "YOUR_DATABASE_PASSWORD",
+    "YOUR_DATABASE_HOST",
+    "YOUR_PASSWORD",
+    "REPLACE_ME",
+)
+
+# If DATABASE_URL is empty or still has a placeholder, fall back to a LOCAL
+# development database (SQLite) so the app can run immediately. Set
+# DATABASE_URL to your real PostgreSQL connection string to use the
+# production database instead.
+if not settings.DATABASE_URL or any(m in settings.DATABASE_URL for m in _PLACEHOLDER_MARKERS):
     print(
         "\n=============================================================\n"
         " WARNING: DATABASE_URL is not configured with real credentials.\n"
