@@ -1,0 +1,22 @@
+# Render.com Blueprint for the BookStore FastAPI backend
+# Deploy via: https://dashboard.render.com/select-repo (connect this repo)
+# or: render blueprint (render.yaml) auto-detected at the repo root.
+#
+# After deploy: set DATABASE_URL to your PostgreSQL connection string
+# (e.g. from Supabase -> Project Settings -> Database -> Connection string).
+
+services:
+  - type: web
+    name: bookstore-api
+    runtime: python
+    plan: free
+    rootDir: BookStore-Backend-main/BookStore-Backend-main
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false
