@@ -7,7 +7,7 @@ load_dotenv()
 
 # Empty by default; the real connection string must be provided via the
 # DATABASE_URL environment variable (see .env / .env.example).
-DEFAULT_DATABASE_URL = ""
+DEFAULT_DATABASE_URL = "sqlite:///./bookstore.db"
 
 
 class Settings(BaseSettings):
@@ -46,18 +46,17 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# Fail fast with a clear message instead of a cryptic DNS/auth error at deploy time.
+# If DATABASE_URL is empty or still has the PASSWORD_HERE placeholder,
+# fall back to a LOCAL development database (SQLite) so the app can run
+# immediately. Set DATABASE_URL to your real PostgreSQL connection string
+# to use the production database instead.
 if not settings.DATABASE_URL or "PASSWORD_HERE" in settings.DATABASE_URL:
-    raise RuntimeError(
-        "\n"
-        "=============================================================\n"
-        " DATABASE_URL is not configured!\n"
-        "-------------------------------------------------------------\n"
-        " Set the DATABASE_URL environment variable to the connection\n"
-        " string for your PostgreSQL database (from your provider's\n"
-        " dashboard — e.g. the External Database URL / connection URI):\n"
-        "   postgresql://USER:PASSWORD@HOST:5432/DBNAME\n"
-        " For local development, copy .env.example to .env and fill in\n"
-        " the real password and host, then restart the server.\n"
+    print(
+        "\n=============================================================\n"
+        " WARNING: DATABASE_URL is not configured with real credentials.\n"
+        " Falling back to a LOCAL development database (SQLite).\n"
+        " To use your real PostgreSQL database, set DATABASE_URL in .env\n"
+        "   e.g. postgresql://USER:PASSWORD@HOST:5432/DBNAME\n"
         "=============================================================\n"
     )
+    settings.DATABASE_URL = "sqlite:///./bookstore.db"
