@@ -4,11 +4,10 @@
 
 // Base URL of the FastAPI backend.
 // Default points at the local backend. When deploying, set
-// REACT_APP_API_URL to your hosted backend URL (it takes priority and
-// is inlined at build/start time).
+// REACT_APP_API_URL to your hosted backend URL (it is inlined at
+// build/start time by Create React App).
 export const API_BASE_URL =
-  (typeof process !== "undefined" && process.env && process.env.REACT_APP_API_URL) ||
-  "http://127.0.0.1:8000";
+  process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
 // Currency symbol used when formatting prices.
 export const CURRENCY = "$";
