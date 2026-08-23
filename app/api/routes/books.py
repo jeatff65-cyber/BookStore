@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from ..deps import get_current_user, get_db
+from ..deps import get_current_admin, get_current_user, get_db
 from ...crud.book import count_books, create_book, delete_book, get_book, get_books, update_book
 from ...models.user import User
 from ...schemas.book import BookCreate, BookList, BookOut, BookUpdate
@@ -37,7 +37,7 @@ def read_book(book_id: int, db: Session = Depends(get_db)):
 def create_new_book(
     book: BookCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_admin),
 ):
     return create_book(db, book)
 
@@ -47,7 +47,7 @@ def update_existing_book(
     book_id: int,
     book_update: BookUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_admin),
 ):
     book = update_book(db, book_id, book_update)
     if not book:
@@ -62,7 +62,7 @@ def update_existing_book(
 def delete_existing_book(
     book_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_admin),
 ):
     deleted = delete_book(db, book_id)
     if not deleted:
